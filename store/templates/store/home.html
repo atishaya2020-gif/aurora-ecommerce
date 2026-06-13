@@ -1,0 +1,723 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block content %}
+
+
+
+<!-- Hero Section -->
+
+<section class="hero">
+
+
+    <div class="hero-left">
+
+
+        <div class="badge">
+
+            ✦ New Arrivals
+
+        </div>
+
+
+
+        <h1>
+
+            Experience<br>
+
+            Tomorrow<span>.</span>
+
+        </h1>
+
+
+
+
+        <p>
+
+            Curated tech, architectural design, and ultimate lifestyle products.
+            Engineered for the aesthetics of modern living.
+
+        </p>
+
+
+
+
+
+        <a href="#products" class="main-btn">
+
+            Explore Store
+
+            <i class="fa-solid fa-arrow-down-long"></i>
+
+        </a>
+
+
+
+
+
+
+        <div class="features">
+
+
+
+            <div>
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <p>
+
+                    Secure System
+
+                    <small>
+
+                        100% Protected Payments
+
+                    </small>
+
+                </p>
+
+            </div>
+
+
+
+
+
+            <div>
+
+                <i class="fa-solid fa-truck"></i>
+
+                <p>
+
+                    Fast Delivery
+
+                    <small>
+
+                        Courier dispatch in 24h
+
+                    </small>
+
+                </p>
+
+            </div>
+
+
+
+
+
+
+            <div>
+
+                <i class="fa-regular fa-gem"></i>
+
+                <p>
+
+                    Premium Quality
+
+                    <small>
+
+                        Top-tier components only
+
+                    </small>
+
+                </p>
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="hero-right">
+
+
+        <div class="aurora-system">
+
+
+            <div class="ring ring1"></div>
+
+            <div class="ring ring2"></div>
+
+            <div class="ring ring3"></div>
+
+
+            <div class="center-star">
+
+                ✦
+
+            </div>
+
+
+            <span class="particle p1"></span>
+
+            <span class="particle p2"></span>
+
+            <span class="particle p3"></span>
+
+
+        </div>
+
+
+    </div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Products -->
+
+<section class="products-section" id="products">
+
+
+
+
+
+    <div class="product-heading">
+
+
+
+        <div>
+
+
+            <p>
+
+                Our Collection
+
+            </p>
+
+
+            <h2>
+
+                Featured Products
+
+            </h2>
+
+
+        </div>
+
+
+
+
+        <a href="/">
+
+            View All Products
+
+            <i class="fa-solid fa-arrow-right-long"></i>
+
+        </a>
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- Categories + Sorting -->
+
+    <div class="category-filter">
+
+
+
+        <a href="/">
+
+            All
+
+        </a>
+
+
+
+
+
+        {% for category in categories %}
+
+
+
+            <a href="?category={{ category.id }}">
+
+
+                {{ category.name }}
+
+
+            </a>
+
+
+
+        {% endfor %}
+
+
+
+
+        <a href="?sort=low">
+
+            💰 Price Low → High
+
+        </a>
+
+
+
+        <a href="?sort=high">
+
+            💎 Price High → Low
+
+        </a>
+
+
+
+
+        <a href="?sort=rating">
+
+            ⭐ Top Rated
+
+        </a>
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Product Grid -->
+
+
+    <div class="product-grid">
+
+
+
+
+
+        {% for product in products %}
+
+
+
+
+
+
+
+        <div class="product-card">
+
+
+
+
+
+
+
+
+
+            <div class="product-status">
+
+
+
+                {% if product.stock > 0 %}
+
+
+
+                    <span class="status-instock">
+
+                        In Stock
+
+                    </span>
+
+
+
+                {% else %}
+
+
+
+
+                    <span class="status-soldout">
+
+                        Sold Out
+
+                    </span>
+
+
+
+                {% endif %}
+
+
+
+
+
+
+
+
+                <a 
+                href="{% url 'toggle_wishlist' product.id %}"
+                class="wishlist-btn"
+                >
+
+
+
+                    {% if user in product.wishlist.all %}
+
+
+
+                        <i class="fa-solid fa-heart"></i>
+
+
+
+                    {% else %}
+
+
+
+
+                        <i class="fa-regular fa-heart"></i>
+
+
+
+                    {% endif %}
+
+
+
+
+                </a>
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+            <!-- IMAGE FIXED -->
+
+            <div class="product-image">
+
+
+
+
+
+                {% if product.image %}
+
+
+
+
+                    <img
+
+                    src="{{ product.image.url }}"
+
+                    alt="{{ product.name }}"
+
+                    >
+
+
+
+
+                {% else %}
+
+
+
+
+
+                    <div class="no-image">
+
+
+                        No Image Available
+
+
+                    </div>
+
+
+
+
+
+                {% endif %}
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+            <div class="product-info">
+
+
+
+
+
+
+                <h3>
+
+
+                    {{ product.name }}
+
+
+                </h3>
+
+
+
+
+
+
+                <p>
+
+
+                    {{ product.description }}
+
+
+                </p>
+
+
+
+
+
+
+
+
+                {% if product.average_rating %}
+
+
+
+
+
+                    <p class="rating">
+
+
+                        ⭐ {{ product.average_rating|floatformat:1 }}/5
+
+
+                    </p>
+
+
+
+
+
+                {% else %}
+
+
+
+
+                    <p class="rating">
+
+
+                        No ratings yet
+
+
+                    </p>
+
+
+
+
+
+                {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+                <div class="product-footer">
+
+
+
+
+
+                    <span class="product-price">
+
+
+                        ₹{{ product.price }}
+
+
+                    </span>
+
+
+
+
+
+
+
+
+                    <div class="product-actions">
+
+
+
+
+
+                        <a
+
+                        href="{% url 'product_detail' product.id %}"
+
+                        class="details-btn"
+
+                        >
+
+
+                            Details
+
+
+                        </a>
+
+
+
+
+
+
+
+
+                        {% if product.stock > 0 %}
+
+
+
+
+                            <a
+
+                            href="{% url 'add_to_cart' product.id %}"
+
+                            class="add-cart-btn"
+
+                            >
+
+
+
+                                Add
+
+                                <i class="fa-solid fa-plus"></i>
+
+
+
+
+                            </a>
+
+
+
+
+
+                        {% endif %}
+
+
+
+
+
+                    </div>
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        {% empty %}
+
+
+
+
+
+
+        <div class="cart-empty-card">
+
+
+
+            <h2>
+
+                No Products Found
+
+            </h2>
+
+
+
+        </div>
+
+
+
+
+
+
+        {% endfor %}
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+</section>
+
+
+
+
+
+
+{% endblock %}

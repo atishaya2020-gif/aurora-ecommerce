@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="detail-layout">
+    <!-- Left Column: Product Image Showcase -->
+    <div class="detail-img-card">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    </div>
+
+    <!-- Right Column: Product Specs Desk -->
+    <div class="detail-info">
+        <div class="detail-badge-row">
+            {% if product.stock > 0 %}
+                <span class="product-status status-instock">In Stock</span>
+            {% else %}
+                <span class="product-status status-soldout">Out of Stock</span>
+            {% endif %}
+            <span class="product-status status-instock" style="background: rgba(56, 189, 248, 0.08); color: var(--accent-primary); border-color: rgba(56, 189, 248, 0.15)">Original Tech</span>
+        </div>
+
+        <h1>{{ product.name }}</h1>
+        
+        <!-- Ratings Row -->
+            <div class="detail-rating">
+
+
+        <i class="fa-solid fa-star"></i>
+
+
+        <span>
+
+
+            {% if average_rating %}
+
+
+                {{ average_rating|floatformat:1 }}
+
+                ({{ review_count }} customer reviews)
+
+
+
+            {% else %}
+
+
+                No reviews yet
+
+
+
+            {% endif %}
+
+
+        </span>
+
+
+
+    </div>
+
+        <div class="detail-price">
+            ₹{{ product.price }}
+            <span class="price-tax-badge">Taxes Included</span>
+        </div>
+
+        <p class="detail-desc">{{ product.description }}</p>
+
+        <!-- Product Specs Metadata Box -->
+        <div class="detail-meta-box">
+            <div class="meta-item">
+                <span>Stock Count</span>
+                <span>{% if product.stock > 0 %}{{ product.stock }} units remaining{% else %}None{% endif %}</span>
+            </div>
+            <div class="meta-item">
+                <span>Shipping Info</span>
+                <span>Free Express Delivery</span>
+            </div>
+            <div class="meta-item">
+                <span>Product Warranty</span>
+                <span>2 Year Manufacturer Cover</span>
+            </div>
+            <div class="meta-item">
+                <span>Support Status</span>
+                <span>24/7 Priority Tech Support</span>
+            </div>
+        </div>
+
+        <!-- Purchase Actions -->
+        <div class="detail-actions">
+            {% if product.stock > 0 %}
+                <a href="{% url 'add_to_cart' product.id %}" class="detail-btn-cart">
+                    Add to Cart <i class="fa-solid fa-bag-shopping"></i>
+                </a>
+            {% else %}
+                <button class="detail-btn-cart" style="opacity: 0.5; cursor: not-allowed;" disabled>
+                    Sold Out
+                </button>
+            {% endif %}
+            <a href="/" class="detail-btn-back">
+                <i class="fa-solid fa-arrow-left"></i> Back to Store
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- REVIEWS SECTION -->
+
+<section class="reviews-section">
+
+
+    <div class="review-heading">
+
+
+        <p>
+            CUSTOMER EXPERIENCE
+        </p>
+
+
+        <h2>
+            Reviews & Ratings ⭐
+        </h2>
+
+
+    </div>
+
+
+
+
+
+
+
+    {% if user.is_authenticated %}
+
+
+    <form method="POST" class="review-form">
+
+
+        {% csrf_token %}
+
+
+                <!-- STAR RATING SELECTOR -->
+
+        <div class="star-picker">
+
+
+            <i class="fa-solid fa-star" data-value="1"></i>
+
+
+            <i class="fa-solid fa-star" data-value="2"></i>
+
+
+            <i class="fa-solid fa-star" data-value="3"></i>
+
+
+            <i class="fa-solid fa-star" data-value="4"></i>
+
+
+            <i class="fa-solid fa-star" data-value="5"></i>
+
+
+
+        </div>
+
+
+
+        {{ form.rating }}
+
+
+
+        <div>
+
+            {{ form.comment }}
+
+        </div>
+
+
+
+        <button type="submit">
+
+            Submit Review
+
+        </button>
+
+
+    </form>
+
+
+
+    {% endif %}
+
+
+
+
+
+
+
+
+    <div class="reviews-list">
+
+
+
+        {% for review in reviews %}
+
+
+
+        <div class="review-card">
+
+
+            <div class="review-top">
+
+
+                <h3>
+
+                    {{ review.user.username|upper }}
+
+                </h3>
+
+
+
+                <span>
+
+
+                    ⭐ {{ review.rating }}/5
+
+
+                </span>
+
+
+            </div>
+
+
+
+
+
+            <p>
+
+                {{ review.comment }}
+
+            </p>
+
+
+
+
+            <small>
+
+                {{ review.created_at|date:"d M Y" }}
+
+            </small>
+
+
+
+
+        </div>
+
+
+
+
+        {% empty %}
+
+
+
+        <h3 class="no-review">
+
+            No reviews yet. Be the first ⭐
+
+        </h3>
+
+
+
+
+        {% endfor %}
+
+
+
+    </div>
+
+
+
+
+</section>
+{% endblock %}

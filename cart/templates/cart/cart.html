@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="cart-title-row">
+    <h1>Shopping Bag</h1>
+    <span class="product-status status-instock" style="background: rgba(56, 189, 248, 0.08); color: var(--accent-primary); border-color: rgba(56, 189, 248, 0.15)">Review Items</span>
+</div>
+
+<div class="cart-layout">
+    <!-- Left Column: Items Panel -->
+    <div class="cart-items-panel">
+        {% for item in items %}
+        <div class="cart-item-card">
+            <div class="cart-item-details">
+                <!-- Product Thumb -->
+                <div class="cart-item-thumb">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                </div>
+                <!-- Info details -->
+                <div class="cart-item-info">
+                    <h3>{{ item.product.name }}</h3>
+                    <p>Unit Price: ₹{{ item.product.price }}</p>
+                </div>
+            </div>
+
+            <!-- Quantity & Subtotal Desk -->
+            <div class="cart-item-pricing">
+                <div class="cart-qty" title="Quantity">
+                    Qty: {{ item.quantity }}
+                </div>
+                <div class="cart-item-subtotal">
+                    ₹{{ item.subtotal }}
+                </div>
+                <a href="{% url 'remove_from_cart' item.id %}" class="remove-item-btn" title="Remove Item">
+                    <i class="fa-regular fa-trash-can"></i>
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <!-- Empty State Card -->
+        <div class="cart-empty-card">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <h2>Your Bag is Empty</h2>
+            <p>Looks like you haven't added any products to your shopping bag yet. Explore our collection to find your next tech piece.</p>
+            <a href="/" class="main-btn">Continue Shopping <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Right Column: Order Summary Panel -->
+    {% if items %}
+    <div class="summary-panel">
+        <h2>Order Summary</h2>
+        
+        <div class="summary-row">
+            <span>Bag Subtotal</span>
+            <span>₹{{ total }}</span>
+        </div>
+        <div class="summary-row">
+            <span>Estimated Shipping</span>
+            <span style="color: var(--success-color)">FREE</span>
+        </div>
+        <div class="summary-row">
+            <span>Tax GST (Included)</span>
+            <span>₹0.00</span>
+        </div>
+        
+        <div class="summary-row total-row">
+            <span>Total Price</span>
+            <span>₹{{ total }}</span>
+        </div>
+
+        <a href="{% url 'checkout' %}" class="summary-checkout-btn">
+            Proceed to Checkout <i class="fa-solid fa-credit-card"></i>
+        </a>
+        <a href="/" class="summary-continue-btn">Continue Shopping</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

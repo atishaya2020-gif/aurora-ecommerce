@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<section class="products-section">
+
+
+    <div class="product-heading">
+
+
+        <div>
+
+            <p>
+                SAVED PRODUCTS
+            </p>
+
+
+            <h2>
+                My Wishlist ❤️
+            </h2>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+    <div class="product-grid">
+
+
+        {% for product in products %}
+
+
+
+        <div class="product-card">
+
+
+
+            <div class="product-status">
+
+
+                {% if product.stock > 0 %}
+
+                    <span>
+                        In Stock
+                    </span>
+
+
+                {% else %}
+
+
+                    <span>
+                        Sold Out
+                    </span>
+
+
+                {% endif %}
+
+
+
+
+                <a href="{% url 'toggle_wishlist' product.id %}">
+
+                    ❤️
+
+                </a>
+
+
+
+            </div>
+
+
+
+
+
+
+            <div class="product-image">
+
+
+                <img src="{{ product.image.url }}">
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="product-info">
+
+
+                <h3>
+
+                    {{ product.name }}
+
+                </h3>
+
+
+
+                <p>
+
+                    {{ product.description }}
+
+                </p>
+
+
+
+
+                <h2>
+
+                    ₹{{ product.price }}
+
+                </h2>
+
+
+
+
+
+                <div class="product-actions">
+
+
+
+                    <a href="{% url 'product_detail' product.id %}">
+
+                        Details
+
+
+                    </a>
+
+
+
+
+                    {% if product.stock > 0 %}
+
+
+                    <a href="{% url 'add_to_cart' product.id %}">
+
+                        Add +
+
+                    </a>
+
+
+                    {% endif %}
+
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+
+
+        {% empty %}
+
+
+            <h2>
+
+                Your wishlist is empty 💔
+
+            </h2>
+
+
+
+        {% endfor %}
+
+
+
+    </div>
+
+
+
+
+</section>
+
+
+
+{% endblock %}

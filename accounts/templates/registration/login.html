@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Welcome Back</h2>
+        <p class="auth-subtitle">Log in to your Aurora account to manage your shopping cart, checkout, and monitor order shipments.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Django Form Output gets styled by master CSS -->
+            {{ form.as_p }}
+            
+            <button type="submit" class="auth-action-btn">
+                Access Account <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+        </form>
+
+        <div class="auth-footer-link">
+            New to our platform? <a href="{% url 'register' %}">Create Account</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
